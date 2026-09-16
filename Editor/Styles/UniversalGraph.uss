@@ -1,0 +1,70 @@
+.universal-graph-toolbar {
+    flex-direction: row;
+    align-items: center;
+    height: 26px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.universal-graph-validation-status {
+    margin-left: 8px;
+}
+
+.universal-graph-toolbar-spacer {
+    flex-grow: 1;
+}
+
+.universal-graph-search-field {
+    width: 220px;
+}
+
+.universal-graph-split-view {
+    flex-grow: 1;
+}
+
+.universal-graph-validation-badge {
+    color: white;
+    -unity-font-style: bold;
+    font-size: 9px;
+    margin-left: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.universal-graph-error {
+    color: #F25959;
+}
+
+.universal-graph-warning {
+    color: #F2B333;
+}
+
+.universal-graph-valid {
+    color: #73D973;
+}
+
+.universal-graph-validation-badge.universal-graph-error {
+    color: white;
+    background-color: #A61F1F;
+}
+
+.universal-graph-validation-badge.universal-graph-warning {
+    color: white;
+    background-color: #A6730D;
+}
+
+.universal-graph-hidden {
+    display: none;
+}
+
+.choice-delete-btn {
+    align-self: flex-end;
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    min-height: 22px;
+    padding: 0;
+    -unity-text-align: middle-center;
+}

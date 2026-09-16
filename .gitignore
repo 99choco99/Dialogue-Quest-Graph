@@ -1,0 +1,14 @@
+# Local editor and build output
+.vs/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.log
+*.tmp
+*.bak
+*.tgz
+*.zip
+.DS_Store
+Thumbs.db

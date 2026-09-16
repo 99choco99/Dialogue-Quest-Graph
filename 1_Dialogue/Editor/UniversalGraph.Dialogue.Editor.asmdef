@@ -1,0 +1,19 @@
+{
+  "name": "UniversalGraph.Dialogue.Editor",
+  "rootNamespace": "UniversalGraph.Dialogue.Editor",
+  "references": [
+    "UniversalGraph.Runtime",
+    "UniversalGraph.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
