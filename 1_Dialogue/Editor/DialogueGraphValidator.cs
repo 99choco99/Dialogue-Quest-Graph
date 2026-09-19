@@ -129,15 +129,15 @@ namespace UniversalGraph.Dialogue.Editor
                 {
                     DialogueChoiceData choice = choiceNodeData.Choices[i];
                     string label = $"선택지 {i + 1}";
-                    if (choice == null || string.IsNullOrWhiteSpace(choice.PortName))
+                    if (choice == null || string.IsNullOrWhiteSpace(choice.PortId))
                     {
                         AddError("DIALOGUE_INVALID_CHOICE", $"{label}: 데이터 또는 포트 ID가 없습니다.", choiceNodeData.Guid);
                         continue;
                     }
 
-                    if (!portIds.Add(choice.PortName))
+                    if (!portIds.Add(choice.PortId))
                     {
-                        AddError("DIALOGUE_DUPLICATE_CHOICE", $"{label}: 포트 '{choice.PortName}'이 중복되었거나 예약된 이름입니다.", choiceNodeData.Guid);
+                        AddError("DIALOGUE_DUPLICATE_CHOICE", $"{label}: 포트 '{choice.PortId}'이 중복되었거나 예약된 이름입니다.", choiceNodeData.Guid);
                     }
 
                     if (string.IsNullOrWhiteSpace(choice.ChoiceText))
@@ -147,7 +147,7 @@ namespace UniversalGraph.Dialogue.Editor
 
                     ValidateMethodBinding(choiceNodeData.Guid, MethodKind.Condition, choice.VisibilityCondition, $"{label} Condition");
 
-                    OutputValidation(choiceNodeData.Guid, choice.PortName, label);
+                    OutputValidation(choiceNodeData.Guid, choice.PortId, label);
                 }
 
                 //혹시 선택지가 없어서 default 포트를 사용하는 경우 default가 연결되어 있는지 확인

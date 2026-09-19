@@ -40,6 +40,15 @@ namespace UniversalGraph.Dialogue.Editor
         public void RefreshPreview()
         {
             title = $"CHOICE: {NodeData?.Choices?.Count ?? 0}";
+            foreach (Port port in outputContainer.Children().OfType<Port>())
+            {
+                if (port.userData is not DialogueChoiceData choice)
+                    continue;
+
+                Label label = port.Q<Label>("choice-text");
+                if (label != null)
+                    label.text = choice.ChoiceText;
+            }
         }
 
         /// <summary>선택지 데이터와 포트를 함께 추가하고 노드 표시를 갱신</summary>
@@ -55,22 +64,24 @@ namespace UniversalGraph.Dialogue.Editor
         /// <summary>선택지 포트를 하나 추가하는 함수</summary>
         private void AddChoicePort(DialogueChoiceData choiceData)
         {
-            if (choiceData == null || string.IsNullOrWhiteSpace(choiceData.PortName))
+            if (choiceData == null || string.IsNullOrWhiteSpace(choiceData.PortId))
             {
                 throw new ArgumentException("선택지 데이터에는 고정된 포트 이름이 필요합니다.", nameof(choiceData));
             }
 
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(float));
-            port.portName = choiceData.PortName;
+            port.portName = choiceData.PortId;
             port.userData = choiceData;
 
             //포트의 이름을 변경하는 이상한 방법
             Label typeLabel = port.contentContainer.Q<Label>("type");
             if (typeLabel != null)
             {
-                // portName도 이 Label의 값을 읽으므로 표시용 글자는 따로 둡니다.
                 UniversalGraphStyles.SetVisible(typeLabel, false);
-                port.contentContainer.Add(new Label("Choice"));
+                port.contentContainer.Add(new Label(choiceData.ChoiceText)
+                {
+                    name = "choice-text"
+                });
             }
 
             outputContainer.Add(port);
@@ -80,8 +91,8 @@ namespace UniversalGraph.Dialogue.Editor
         public void RemoveChoice(DialogueChoiceData choiceData)
         {
             Port port = outputContainer.Children().OfType<Port>()
-                .FirstOrDefault(candidate => ReferenceEquals(candidate.userData, choiceData) || candidate.portName == choiceData.PortName) 
-                ?? throw new InvalidOperationException($"선택지 '{choiceData.PortName}'에 연결된 출력 포트를 찾지 못했습니다.");
+                .FirstOrDefault(candidate => ReferenceEquals(candidate.userData, choiceData) || candidate.portName == choiceData.PortId) 
+                ?? throw new InvalidOperationException($"선택지 '{choiceData.PortId}'에 연결된 출력 포트를 찾지 못했습니다.");
 
             GraphView graphView = GetFirstAncestorOfType<GraphView>();
             foreach (Edge edge in port.connections.ToList())
@@ -124,14 +135,14 @@ namespace UniversalGraph.Dialogue.Editor
                     throw new InvalidOperationException("선택지 목록에 null 항목이 있습니다.");
                 }
 
-                if (string.IsNullOrWhiteSpace(choice.PortName))
+                if (string.IsNullOrWhiteSpace(choice.PortId))
                 {
                     throw new InvalidOperationException("선택지에 포트 ID가 없습니다.");
                 }
 
-                if (!portIds.Add(choice.PortName))
+                if (!portIds.Add(choice.PortId))
                 {
-                    throw new InvalidOperationException($"선택지 출력 포트 ID '{choice.PortName}'가 중복되었습니다.");
+                    throw new InvalidOperationException($"선택지 출력 포트 ID '{choice.PortId}'가 중복되었습니다.");
                 }
             }
         }

@@ -23,8 +23,8 @@ namespace UniversalGraph.Editor
 		public void UpdateInspector(GraphNode selectedNode)
 		{
 			selectedGraphNode = selectedNode;
-			contentRoot.Clear();
-			if (selectedGraphNode != null)
+            contentRoot.Clear();
+            if (selectedGraphNode != null)
 			{
 				VisualElement inspectorContent = selectedGraphNode.CreateInspector(editHandler);
 				if (inspectorContent != null)
@@ -34,6 +34,7 @@ namespace UniversalGraph.Editor
 			}
 
 			RefreshValidationDisplay();
+
 		}
 
 		/// <summary>필드 편집 도중 인스펙터 전체를 업데이트 하지 않고 진단 표시만 갱신</summary>

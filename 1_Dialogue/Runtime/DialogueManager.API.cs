@@ -169,7 +169,7 @@ namespace UniversalGraph
                 return false;
             }
 
-            ProceedToNextNode(selectedChoiceData.PortName);
+            ProceedToNextNode(selectedChoiceData.PortId);
             return true;
         }
 

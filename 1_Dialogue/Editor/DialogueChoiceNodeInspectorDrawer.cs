@@ -86,7 +86,10 @@ namespace UniversalGraph.Dialogue.Editor
             };
             textField.RegisterValueChangedCallback(change =>
             {
-                editHandler.ApplyDataEdit("Change choice text", () => choice.ChoiceText = change.newValue);
+                editHandler.ApplyDataEdit("Change choice text", () => {
+                    choice.ChoiceText = change.newValue;
+                    selectedNode.RefreshPreview();
+                });
             });
             box.Add(textField);
 

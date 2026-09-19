@@ -111,17 +111,17 @@ namespace UniversalGraph
                 HashSet<string> portIds = new() { DialoguePortNames.Default };
                 foreach (DialogueChoiceData choiceData in choiceNodeData.Choices)
                 {
-                    if (choiceData == null || string.IsNullOrWhiteSpace(choiceData.PortName))
+                    if (choiceData == null || string.IsNullOrWhiteSpace(choiceData.PortId))
                     {
                         error = $"대화 그래프 '{container.name}'의 Choice 노드 '{choiceNodeData.Guid}'에 " +
                                 "null 선택지 또는 빈 선택지 포트 ID가 있습니다.";
                         return false;
                     }
 
-                    if (!portIds.Add(choiceData.PortName))
+                    if (!portIds.Add(choiceData.PortId))
                     {
                         error = $"대화 그래프 '{container.name}'의 Choice 노드 '{choiceNodeData.Guid}'가 " +
-                                $"중복되었거나 예약된 선택지 포트 '{choiceData.PortName}'을 사용합니다.";
+                                $"중복되었거나 예약된 선택지 포트 '{choiceData.PortId}'을 사용합니다.";
                         return false;
                     }
 

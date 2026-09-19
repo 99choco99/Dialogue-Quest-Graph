@@ -17,6 +17,8 @@ namespace UniversalGraph.Editor
         private UniversalGraphToolbar toolbar;
         private UniversalGraphView graphView;
         private NodeInspector inspectorPanel;
+        private IVisualElementScheduledItem inspectorUpdate;
+
 
         private string previousSearchQuery;
         private int nextSearchIndex;
@@ -243,7 +245,15 @@ namespace UniversalGraph.Editor
         /// <summary>캔버스에서 노드를 선택하면 해당 노드의 Inspector를 표시</summary>
         private void OnNodeSelected(GraphNode selectedNode)
         {
-            inspectorPanel?.UpdateInspector(selectedNode);
+            inspectorUpdate?.Pause();
+
+            if (inspectorPanel.focusController?.focusedElement is VisualElement focused &&
+                inspectorPanel.Contains(focused))
+            {
+                focused.Blur(); 
+            }
+
+            inspectorUpdate = inspectorPanel.schedule.Execute(() => inspectorPanel.UpdateInspector(selectedNode));
         }
 
         /// <summary>
@@ -354,6 +364,12 @@ namespace UniversalGraph.Editor
                 $"[Flow Graph] '{container.name}'을 스키마 {result.BeforeVersion}에서 " +
                 $"{result.AfterVersion}(으)로 마이그레이션했습니다.",
                 container);
+        }
+
+        /// <summary>그래프 창으로 돌아오면 외부에서 변경된 참조를 다시 검사</summary>
+        private void OnFocus()
+        {
+            ValidateCurrentGraph();
         }
 
         //==============================ToolBar 함수들 ===================================

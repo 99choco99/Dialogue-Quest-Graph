@@ -5,7 +5,7 @@ namespace UniversalGraph
 	[Serializable]
 	public class DialogueChoiceData
 	{
-		public string PortName = Guid.NewGuid().ToString();
+		public string PortId = Guid.NewGuid().ToString();
 
 		public string ChoiceText;
 
