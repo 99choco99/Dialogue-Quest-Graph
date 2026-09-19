@@ -167,7 +167,7 @@ namespace UniversalGraph
                         ProcessAndGate(progress, index, queue, ANDGateData, currentStep.PreNodeGuid);
                         break;
 
-                    case QuestFlowEndNodeData flowEndData:
+                    case QuestStateChangeNodeData flowEndData:
                         if (flowEndData.NewState != QuestState.CanComplete
                             && flowEndData.NewState != QuestState.TurnedIn
                             && flowEndData.NewState != QuestState.Failed)
@@ -178,11 +178,16 @@ namespace UniversalGraph
                             return StopAfterExecutionError(progress);
                         }
 
+
                         progress.state = flowEndData.NewState;
-                        progress.ActiveNodeGuids.Clear();
+                        if (flowEndData.NewState != QuestState.CanComplete) { progress.ActiveNodeGuids.Clear(); }
                         CompleteNode(progress, nodeData.Guid);
                         ResumeDependentQuests(controller, progress.questId);
-                        return true;
+                        if (flowEndData.NewState != QuestState.CanComplete)
+                        {
+                            return true;
+                        }
+                        break;
 
                     case QuestActionNodeData:
                     case QuestRewardNodeData:
@@ -234,7 +239,8 @@ namespace UniversalGraph
             }
 
             // 정상적인 진행이 아님을 알리는 방어코드
-            if (CanContinueQuest(controller, progress, runVersion)
+            if (CanContinueQuest(controller, progress, runVersion) 
+                && progress.state == QuestState.InProgress
                 && progress.ActiveNodeGuids.Count == 0
                 && !executingActionNodes.Any(action => action.Progress == progress && action.RunVersion == runVersion))
             {

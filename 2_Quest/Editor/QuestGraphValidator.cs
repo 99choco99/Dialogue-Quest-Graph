@@ -122,7 +122,7 @@ namespace UniversalGraph.Quest.Editor
                         }
                         break;
 
-                    case QuestFlowEndNodeData flowEndData:
+                    case QuestStateChangeNodeData flowEndData:
                         if (flowEndData.NewState != QuestState.CanComplete
                             && flowEndData.NewState != QuestState.TurnedIn
                             && flowEndData.NewState != QuestState.Failed)

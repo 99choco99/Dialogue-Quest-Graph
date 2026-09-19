@@ -218,7 +218,7 @@ namespace UniversalGraph
 
             // 이번 이벤트가 시작될 때의 runVersion과 activeNode를 보관. runVersion과 activeNode를 참조값으로 넘기지 않음.
             var targets = controller.QuestProgress.Values
-                .Where(progress => progress != null && progress.state == QuestState.InProgress)
+                .Where(progress => progress != null && (progress.state == QuestState.InProgress || progress.state == QuestState.CanComplete))
                 .Select(progress => (Progress: progress, RunVersion: progress.runVersion, ActiveNodeGuids: progress.ActiveNodeGuids.ToArray()))
                 .ToArray();
 
@@ -254,7 +254,7 @@ namespace UniversalGraph
 
                     changed |= ProcessObjectiveProgress(controller, container, progress, index, objectiveData, amount, out bool executionSucceeded);
 
-                    if (!executionSucceeded || progress.state != QuestState.InProgress)
+                    if (!executionSucceeded)
                     {
                         break;
                     }
@@ -282,7 +282,7 @@ namespace UniversalGraph
 
             controller.QuestProgress.TryGetValue(questId, out QuestProgress progress);
             if (!Registry.GetQuestGraphIndex(questId, out QuestContainer container, out QuestGraphIndex index)
-                || progress == null || progress.state != QuestState.InProgress)
+                || progress == null || (progress.state != QuestState.InProgress && progress.state != QuestState.CanComplete))
             {
                 return false;
             }
@@ -364,7 +364,7 @@ namespace UniversalGraph
             }
 
             progress.state = state;
-            if (state != QuestState.InProgress)
+            if (state != QuestState.InProgress && state != QuestState.CanComplete)
             {
                 progress.ActiveNodeGuids.Clear();
             }

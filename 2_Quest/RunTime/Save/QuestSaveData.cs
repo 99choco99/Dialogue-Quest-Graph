@@ -171,7 +171,7 @@ namespace UniversalGraph
                 return false;
             }
 
-            if (progress.state != QuestState.InProgress && progress.ActiveNodeGuids.Count > 0)
+            if (progress.state != QuestState.CanComplete && progress.state != QuestState.InProgress && progress.ActiveNodeGuids.Count > 0)
             {
                 error = $"Quest {progress.questId}의 상태는 {progress.state}이지만 활성 노드가 남아 있습니다.";
                 return false;
@@ -287,7 +287,7 @@ namespace UniversalGraph
                 }
 
                 // 종료된 Quest는 활성 목표를 비우지만, 미완료 목표의 진행량은 기록으로 보존합니다.
-                if (progress.state == QuestState.InProgress && !isActive && !progress.CompletedNodeGuids.Contains(pair.Key))
+                if ((progress.state == QuestState.CanComplete || progress.state == QuestState.InProgress) && !isActive && !progress.CompletedNodeGuids.Contains(pair.Key))
                 {
                     error = $"Quest {progress.questId}의 Objective '{pair.Key}' 진행량이 " +
                             "활성 또는 완료 기록과 연결되어 있지 않습니다.";
@@ -327,7 +327,7 @@ namespace UniversalGraph
         {
             return nodeData is QuestObjectiveNodeData
                    || nodeData is QuestAndGateNodeData
-                   || nodeData is QuestFlowEndNodeData
+                   || nodeData is QuestStateChangeNodeData
                    || nodeData is QuestActionNodeData
                    || nodeData is QuestRewardNodeData
                    || nodeData is QuestStateWaitNodeData;

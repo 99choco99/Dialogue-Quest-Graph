@@ -3,7 +3,7 @@ using System;
 namespace UniversalGraph
 {
 	[Serializable]
-	public class QuestFlowEndNodeData : NodeBaseData
+	public class QuestStateChangeNodeData : NodeBaseData
 	{
 		public QuestState NewState = QuestState.CanComplete;
 	}

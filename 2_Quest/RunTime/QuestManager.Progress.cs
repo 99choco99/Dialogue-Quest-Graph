@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,7 +38,9 @@ namespace UniversalGraph
         /// <summary>게임 Action이 퀘스트를 종료, 초기화했다면 이전 흐름을 중단</summary>
         private static bool CanContinueQuest(IQuestController controller, QuestProgress progress, int runVersion)
         {
-            return progress.state == QuestState.InProgress && IsCurrentRun(controller, progress, runVersion);
+            return (progress.state == QuestState.InProgress
+                    || progress.state == QuestState.CanComplete)
+                   && IsCurrentRun(controller, progress, runVersion);
         }
 
         
@@ -85,7 +88,7 @@ namespace UniversalGraph
             // 후속 Action이 상태를 또 바꾸기 전에, 이번 도달 순간에 조건을 만족한 대기만 확정
             var waitingQuests = new List<(QuestProgress Progress, int RunVersion, QuestContainer Container, QuestGraphIndex Index, string[] NodeGuids)>();
             foreach (QuestProgress progress in controller.QuestProgress.Values
-                         .Where(progress => progress != null && progress.state == QuestState.InProgress)
+                         .Where(progress => progress != null && (progress.state == QuestState.InProgress || progress.state == QuestState.CanComplete))
                          .ToArray())
             {
                 if (!registry.GetQuestGraphIndex(progress.questId, out QuestContainer container, out QuestGraphIndex index))
