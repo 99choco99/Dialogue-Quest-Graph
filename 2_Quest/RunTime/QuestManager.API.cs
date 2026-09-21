@@ -160,6 +160,20 @@ namespace UniversalGraph
         }
 
         //=========================== 시작 및 수락 ===========================
+        [DialogueAction("QuestStart")]
+        public static void StartQuest(QuestContainer container, DialogueExecutionContext context)
+        {
+            if (container == null || context?.QuestController == null)
+            {
+                throw new InvalidOperationException("대상 Quest와 대화의 QuestController가 필요합니다.");
+            }
+
+            if (!StartQuest(context.QuestController, container.QuestId))
+            {
+                throw new InvalidOperationException($"퀘스트 '{container.name}'을 시작하지 못했습니다.");
+            }
+        }
+
 
         /// <summary>Quest를 수락하는 함수. 시작 전 유효한지 확인합니다.</summary>
         public static bool StartQuest(IQuestController controller, QuestSuggestion suggestion)
@@ -305,6 +319,21 @@ namespace UniversalGraph
         }
 
         //========================= 상태 변경 및 복원 =========================
+
+        [DialogueAction("QuestReset")]
+        public static void ResetQuest(QuestContainer container, DialogueExecutionContext context)
+        {
+            if (container == null || context?.QuestController == null)
+            {
+                throw new InvalidOperationException("대상 Quest와 대화의 QuestController가 필요합니다.");
+            }
+
+            if (!QuestManager.ResetQuest(context.QuestController, container.QuestId))
+            {
+                throw new InvalidOperationException($"퀘스트 '{container.name}'을 초기화하지 못했습니다.");
+            }
+        }
+
 
         /// <summary>Quest 상태와 모든 노드 진행 기록을 시작 전 상태로 초기화</summary>
         public static bool ResetQuest(IQuestController controller, int questId)

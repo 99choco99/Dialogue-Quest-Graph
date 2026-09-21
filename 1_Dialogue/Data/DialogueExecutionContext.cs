@@ -11,11 +11,14 @@ namespace UniversalGraph
 
 		public GameObject Interactor { get; }
 
-		/// <summary>상호작용 한번에 하나씩 사용할 데이터 박스</summary>
-		public DialogueExecutionContext(GameObject speaker, GameObject interactor)
+        public IQuestController QuestController { get; }
+
+        /// <summary>상호작용 한번에 하나씩 사용할 데이터 박스</summary>
+        public DialogueExecutionContext(GameObject speaker, GameObject interactor, IQuestController questController = null)
 		{
 			Speaker = speaker;
 			Interactor = interactor;
+			QuestController = questController;
 		}
 	}
 }

@@ -1,6 +1,6 @@
 {
   "name": "com.choco.dialogue-quest-graph",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "displayName": "Dialogue & Quest Graph",
   "description": "Graph-based dialogue and quest authoring with independent runtime APIs and attribute-based game method binding.",
   "unity": "6000.3",

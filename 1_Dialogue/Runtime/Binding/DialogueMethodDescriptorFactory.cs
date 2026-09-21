@@ -64,7 +64,11 @@ namespace UniversalGraph
 				error = $"'{key}' ({name})는 async 메서드일 수 없습니다.";
 				return false;
 			}
-			if (owner == DialogueMethodOwner.Global && !method.IsStatic)
+            if (method.IsStatic)
+            {
+                owner = DialogueMethodOwner.Global;
+            }
+            if (owner == DialogueMethodOwner.Global && !method.IsStatic)
 			{
 				error = $"Global 대상 '{key}' ({name})는 static 메서드여야 합니다.";
 				return false;
